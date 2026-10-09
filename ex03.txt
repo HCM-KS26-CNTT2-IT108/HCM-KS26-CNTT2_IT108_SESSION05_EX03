@@ -1,0 +1,24 @@
+BÀI TẬP SESSION 6: KIẾN TRÚC SƯ HẠ TẦNG SERVER
+
+1. SƠ ĐỒ LUỒNG IPO (INPUT – PROCESS – OUTPUT)
+[INPUT]
+  - Yêu cầu khởi tạo cấu trúc thư mục: smart-farm\data\logs, smart-farm\code, backup\code_v1.
+  - Các file cấu hình cần tạo: config.json, sensors.py, .env (file ẩn).
+[PROCESS]
+  1. Khởi tạo thư mục lồng nhau: Sử dụng cmdlet New-Item với -ItemType Directory và tham số -Force để tự động tạo cây thư mục lồng nhau nếu chưa tồn tại
+  2. Tạo hàng loạt file: Truyền mảng danh sách đường dẫn file vào New-Item với -ItemType File để tạo đồng thời 3 file cấu hình
+  3. Sao chép đệ quy: Sử dụng Copy-Item kết hợp tham số -Recurse để sao chép toàn bộ thư mục code (bao gồm tất cả file bên trong) sang thư mục backup\code_v1
+[OUTPUT]
+  - Cấu trúc hạ tầng thư mục hoàn chỉnh trên máy chủ:
+    smart-farm\data\logs
+    smart-farm\code (chứa config.json, sensors.py, .env)
+    backup\code_v1 (chứa bản sao toàn bộ nội dung của smart-farm\code)
+
+
+2. DANH SÁCH CÂU LỆNH POWERSHELL
+[Bước 1] Tạo cây thư mục lồng nhau (1 dòng lệnh):
+New-Item -ItemType Directory -Force -Path "smart-farm\data\logs", "smart-farm\code"
+[Bước 2] Tạo cùng lúc 3 file cấu hình (1 dòng lệnh):
+New-Item -ItemType File -Force -Path "smart-farm\code\config.json", "smart-farm\code\sensors.py", "smart-farm\code\.env"
+[Bước 3] Sao chép toàn bộ thư mục code sang backup\code_v1:
+Copy-Item -Path "smart-farm\code" -Destination "backup\code_v1" -Recurse -Force
